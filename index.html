@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <audio id="background-music" loop>
+  <source src="music/bg_music.mp3" type="audio/mpeg">
+</audio>
+    <div id="bg-text-container">
+  <img src="images/bg_text.png" alt="Background text" id="bg-text">
+</div>
+    <button id="hamburger-button" class="hamburger-button">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </button>
+    <nav id="nav-menu">
+        <div id="close-button" class="nav-button close-btn">
+            <div class="x-bar"></div>
+            <div class="x-bar"></div>
+        </div>
+        <div id="home-button" class="nav-button">
+            <img src="images/home.svg" alt="Home">
+        </div>
+        <div id="about-button" class="nav-button">
+            <img src="images/user.svg" alt="About">
+        </div>
+        <div id="projects-button" class="nav-button">
+            <img src="images/document.svg" alt="Projects">
+        </div>
+        <div id="contacts-button" class="nav-button">
+            <img src="images/envelope.svg" alt="Contacts">
+        </div>
+    </nav>
+
+    <div id="page-wrapper">
+        <div class="main-container page-section" id="homepage-section">
+            <div id="fox-character-container">
+                <img id="fox-body" src="images/fox_body.png" alt="Fox Character">
+                <img id="fox-shirt" src="images/shirt 1.png" alt="Fox's Shirt" data-dialog="💥Click me to change my shirt">
+                <div id="dialogue-box" class="speech-bubble"></div>
+            </div>
+            
+            <div id="computer-monitor" data-dialog="📂Check out my work">
+                <img src="images/desk.png" alt="Computer Monitor" class="monitor-image">
+                <div class="monitor-screen">
+                    <span class="work-text">WORK</span>
+                </div>
+            </div>
+
+            <div class="social-media-shelf-container">
+                <img src="images/shelf.png" alt="Social Media Shelf" class="shelf-image">
+                <a id="linkedin-icon" href="#" target="_blank" data-dialog="Placeholder LinkedIn message">
+                    <div class="flower-burst"></div>
+                    <img src="images/linkedin.png" alt="LinkedIn">
+                </a>
+                <a id="github-icon" href="#" target="_blank" data-dialog="Placeholder GitHub message">
+                    <div class="flower-burst"></div>
+                    <img src="images/github.png" alt="GitHub">
+                </a>
+                <a id="discord-icon" href="#" target="_blank" data-dialog="Placeholder Discord message">
+                    <div class="flower-burst"></div>
+                    <img src="images/discord.png" alt="Discord">
+                </a>
+            </div>
+            
+            <div id="resume-sign" data-dialog="Check out my resume">
+                <img src="images/resume sign.png" alt="Resume Sign" class="resume-image">
+            </div>
+            
+            <div id="cat-picture" data-dialog="Learn more about me!">
+                <img src="images/frame.png" alt="Sleeping Cat Picture" class="picture-image">
+            </div>
+            
+            <div id="guitar" data-dialog="Ready to rock?">
+                <img src="images/guitar.png" alt="Electric Guitar">
+            </div>
+            
+            <div id="cabinet">
+                <img src="images/cabinet.png" alt="Cabinet">
+                <div id="speaker" data-dialog="Turn off the music?">
+                    <img src="images/speaker.png" alt="Speaker">
+                </div>
+                <div id="flower" data-dialog="The Flower enjoys the music" class="flower-pot">
+                    <img src="images/flower.png" alt="Flower">
+                </div>
+            </div>
+        </div>
+        
+        <div id="projects" class="page-section">
+            <span class="page-title">WORK</span>
+        </div>
+        <div id="about" class="page-section">
+            <span class="page-title">ABOUT</span>
+        </div>
+        <div id="contacts" class="page-section">
+            <span class="page-title">CONTACTS</span>
+        </div>
+        <div id="resume" class="page-section">
+            <span class="page-title">RESUME</span>
+        </div>
+    </div>
+
+    <script src="n.js" defer></script>
+</body>
+</html>
