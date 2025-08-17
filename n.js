@@ -1,4 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+       if (history.scrollRestoration) {
+        history.scrollRestoration = 'manual';
+    }
+
+    // Remove any "show" classes to reset the page position
+    const pageWrapperOnLoad = document.getElementById('page-wrapper');
+    if (pageWrapperOnLoad) {
+        pageWrapperOnLoad.classList.remove('show-projects', 'show-about', 'show-contacts', 'show-resume');
+    }
+    
+    // Manually scroll to the top of the page
+    window.scrollTo(0, 0);
     const foxCharacterContainer = document.getElementById('fox-character-container');
     const catShirt = document.getElementById('fox-shirt');
     const dialogueBox = document.getElementById('dialogue-box');
@@ -19,6 +32,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const aboutButton = document.getElementById('about-button');
     const projectsButton = document.getElementById('projects-button');
     const contactsButton = document.getElementById('contacts-button');
+
+    // PASTE THIS AT THE VERY TOP OF n_test.js
+function transitionToPage(targetClass) {
+ const overlay = document.getElementById('transition-overlay');
+ const pageWrapper = document.getElementById('page-wrapper');
+ const fox = document.getElementById('fox-character-container');
+
+ foxJump();
+ overlay.classList.add('animate');
+
+ setTimeout(() => {
+ fox.style.opacity = 0;
+
+ pageWrapper.classList.remove('show-projects', 'show-about', 'show-contacts', 'show-resume');
+ if (targetClass) {
+ pageWrapper.classList.add(targetClass);
+ }
+
+ // If showing the about page, we don't want the fox to enter in the same way
+ if (targetClass === 'show-about') {
+ fox.style.opacity = 1; // Make sure the fox is visible for the circle animation
+ } else {
+ setTimeout(() => {
+ fox.style.opacity = 1;
+ fox.classList.add('fox-entering');
+ }, 50);
+ }
+
+ overlay.classList.remove('animate');
+
+ fox.removeEventListener('animationend', onFoxEnterEnd); // Remove previous listener
+ const onFoxEnterEnd = () => {
+ fox.classList.remove('fox-entering');
+ };
+ if (targetClass !== 'show-about') {
+ fox.addEventListener('animationend', onFoxEnterEnd, { once: true });
+ }
+
+ }, 800);
+ }
+
 
     const shirtImages = ['images/shirt 1.png', 'images/shirt 2.png', 'images/shirt 3.png'];
     let currentShirtIndex = 0;
@@ -77,30 +131,28 @@ document.addEventListener('DOMContentLoaded', () => {
    
 
     if (computerMonitor) {
-        computerMonitor.addEventListener('mouseover', () => showDialogue("📂Check out my work", computerMonitor));
-        computerMonitor.addEventListener('mouseout', hideDialogue);
-        computerMonitor.addEventListener('click', () => {
-            pageWrapper.classList.add('show-projects');
-        });
-    }
+    computerMonitor.addEventListener('mouseover', () => showDialogue("📂Check out my work", computerMonitor));
+    computerMonitor.addEventListener('mouseout', hideDialogue);
+    computerMonitor.addEventListener('click', () => {
+        transitionToPage('show-projects'); // This is the new line
+    });
+}
     
     if (resumeSign) {
-        resumeSign.addEventListener('mouseover', () => showDialogue("💼I'm looking for a job", resumeSign));
-        resumeSign.addEventListener('mouseout', hideDialogue);
-        resumeSign.addEventListener('click', () => {
-            pageWrapper.classList.remove('show-projects', 'show-about', 'show-contacts');
-            pageWrapper.classList.add('show-resume');
-        });
-    }
+    resumeSign.addEventListener('mouseover', () => showDialogue("💼I'm looking for a job", resumeSign));
+    resumeSign.addEventListener('mouseout', hideDialogue);
+    resumeSign.addEventListener('click', () => {
+        transitionToPage('show-resume'); // This is the new line
+    });
+}
 
     if (catPicture) {
-        catPicture.addEventListener('mouseover', () => showDialogue("🦊Learn more about me🦊", catPicture));
-        catPicture.addEventListener('mouseout', hideDialogue);
-        catPicture.addEventListener('click', () => {
-            pageWrapper.classList.remove('show-projects', 'show-contacts', 'show-resume');
-            pageWrapper.classList.add('show-about');
-        });
-    }
+    catPicture.addEventListener('mouseover', () => showDialogue("🦊Learn more about me🦊", catPicture));
+    catPicture.addEventListener('mouseout', hideDialogue);
+    catPicture.addEventListener('click', () => {
+        transitionToPage('show-about'); // This is the new line
+    });
+}
     
 if (guitar) {
     const guitarSound = new Audio('music/guitar_sound.mp3');
@@ -155,53 +207,46 @@ document.querySelectorAll('#linkedin-icon, #github-icon, #discord-icon').forEach
     icon.addEventListener('mouseover', () => showDialogue(message, icon));
     icon.addEventListener('mouseout', hideDialogue);
 });
-    if (hamburgerButton && closeButton) {
-        hamburgerButton.addEventListener('click', () => {
-            document.body.classList.add('menu-open');
-            navMenu.classList.add('open');
-        });
-        closeButton.addEventListener('click', () => {
-            document.body.classList.remove('menu-open');
-            navMenu.classList.remove('open');
-        });
-    }
 
-    const navigateAndClose = () => {
-        pageWrapper.classList.remove('show-projects', 'show-about', 'show-contacts', 'show-resume');
-        document.body.classList.remove('menu-open');
-        navMenu.classList.remove('open');
-    };
+if (hamburgerButton && navMenu) {
+    hamburgerButton.addEventListener('click', () => navMenu.classList.add('open'));
+    closeButton.addEventListener('click', () => navMenu.classList.remove('open'));
+}
 
-    if (homeButton) {
-        homeButton.addEventListener('click', navigateAndClose);
-    }
-    if (aboutButton) {
-        aboutButton.addEventListener('click', () => {
-            pageWrapper.classList.remove('show-projects', 'show-contacts', 'show-resume');
-            pageWrapper.classList.add('show-about');
-            navigateAndClose();
-        });
-    }
-    if (projectsButton) {
-        projectsButton.addEventListener('click', () => {
-            pageWrapper.classList.remove('show-about', 'show-contacts', 'show-resume');
-            pageWrapper.classList.add('show-projects');
-            navigateAndClose();
-        });
-    }
-    if (contactsButton) {
-        contactsButton.addEventListener('click', () => {
-            pageWrapper.classList.remove('show-projects', 'show-about', 'show-resume');
-            pageWrapper.classList.add('show-contacts');
-            navigateAndClose();
-        });
-    }
+const closeMenu = () => navMenu.classList.remove('open');
+
+// 2. Home Button -> Homepage
+if (homeButton) {
+    homeButton.addEventListener('click', () => {
+        transitionToPage(null); // Use null to go to the homepage
+        closeMenu();
+    });
+}
+
+// 3. About Button -> About Page
+if (aboutButton) {
+    aboutButton.addEventListener('click', () => {
+        transitionToPage('show-about');
+        closeMenu();
+    });
+}
+
+// 4. Work Button -> Work/Projects Page
+if (projectsButton) {
+    projectsButton.addEventListener('click', () => {
+        transitionToPage('show-projects');
+        closeMenu();
+    });
+}
+
+// Note: We assume the resume page is not in the nav menu, 
+// but if it is, you would add a block for it here just like the others.
     const socialLogos = {
     '#linkedin-icon': "🌐Follow me on Linkedin",
-    '#discord-icon': "☠️Enter at own risk",
+    '#discord-icon': "You can find me on Discord: the_silent_reaper23",
     '#github-icon': "😅Don't judge my GH stats"
 };
-backgroundMusic.volume = 0.07; 
+backgroundMusic.volume = 0.1; 
 
   
 

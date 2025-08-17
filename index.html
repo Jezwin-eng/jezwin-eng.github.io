@@ -1,18 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Website</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Noto+Color+Emoji&family=Pixelify+Sans:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <title>Project Sora</title>
+    <link rel="stylesheet" href="style_test.css">
+
 </head>
+
 <body>
+    <svg height="0" width="0">
+        <defs>
+            <clipPath id="splotch-clip" clipPathUnits="objectBoundingBox">
+                <circle cx="0.5" cy="0.5" r="0.75" />
+            </clipPath>
+        </defs>
+    </svg>
     <audio id="background-music" loop>
-  <source src="music/bg_music.mp3" type="audio/mpeg">
-</audio>
+        <source src="music/bg_music.mp3" type="audio/mpeg">
+    </audio>
     <div id="bg-text-container">
-  <img src="images/bg_text.png" alt="Background text" id="bg-text">
-</div>
+        <img src="images/bg_text.png" alt="Background text" id="bg-text">
+    </div>
     <button id="hamburger-button" class="hamburger-button">
         <div class="bar"></div>
         <div class="bar"></div>
@@ -32,19 +47,21 @@
         <div id="projects-button" class="nav-button">
             <img src="images/document.svg" alt="Projects">
         </div>
-        <div id="contacts-button" class="nav-button">
+        <a id="contacts-button" href="mailto:jezwinano@gmail.com" class="nav-button">
             <img src="images/envelope.svg" alt="Contacts">
-        </div>
+        </a>
     </nav>
 
     <div id="page-wrapper">
+        <div id="transition-overlay"></div>
         <div class="main-container page-section" id="homepage-section">
             <div id="fox-character-container">
                 <img id="fox-body" src="images/fox_body.png" alt="Fox Character">
-                <img id="fox-shirt" src="images/shirt 1.png" alt="Fox's Shirt" data-dialog="💥Click me to change my shirt">
+                <img id="fox-shirt" src="images/shirt 1.png" alt="Fox's Shirt"
+                    data-dialog="💥Click me to change my shirt">
                 <div id="dialogue-box" class="speech-bubble"></div>
             </div>
-            
+
             <div id="computer-monitor" data-dialog="📂Check out my work">
                 <img src="images/desk.png" alt="Computer Monitor" class="monitor-image">
                 <div class="monitor-screen">
@@ -54,11 +71,11 @@
 
             <div class="social-media-shelf-container">
                 <img src="images/shelf.png" alt="Social Media Shelf" class="shelf-image">
-                <a id="linkedin-icon" href="#" target="_blank" data-dialog="Placeholder LinkedIn message">
+                <a id="linkedin-icon" href="https://in.linkedin.com/in/jezwin-ano-1a876a291" target="_blank" data-dialog="Placeholder LinkedIn message">
                     <div class="flower-burst"></div>
                     <img src="images/linkedin.png" alt="LinkedIn">
                 </a>
-                <a id="github-icon" href="#" target="_blank" data-dialog="Placeholder GitHub message">
+                <a id="github-icon" href="https://github.com/Jezwin-eng" target="_blank" data-dialog="Placeholder GitHub message">
                     <div class="flower-burst"></div>
                     <img src="images/github.png" alt="GitHub">
                 </a>
@@ -67,19 +84,19 @@
                     <img src="images/discord.png" alt="Discord">
                 </a>
             </div>
-            
+
             <div id="resume-sign" data-dialog="Check out my resume">
                 <img src="images/resume sign.png" alt="Resume Sign" class="resume-image">
             </div>
-            
+
             <div id="cat-picture" data-dialog="Learn more about me!">
                 <img src="images/frame.png" alt="Sleeping Cat Picture" class="picture-image">
             </div>
-            
+
             <div id="guitar" data-dialog="Ready to rock?">
                 <img src="images/guitar.png" alt="Electric Guitar">
             </div>
-            
+
             <div id="cabinet">
                 <img src="images/cabinet.png" alt="Cabinet">
                 <div id="speaker" data-dialog="Turn off the music?">
@@ -90,13 +107,91 @@
                 </div>
             </div>
         </div>
-        
+
         <div id="projects" class="page-section">
-            <span class="page-title">WORK</span>
+
+    <div class="projects-grid">
+
+      <a href="https://github.com/Jezwin-eng/small-rpg.git" class="project-card">
+    <video autoplay loop muted playsinline class="project-image">
+        <source src="videos/rpg.webm" type="video/webm">
+    </video>
+    <div class="project-info">
+        <div class="project-info-bottom">
+            <span class="project-title">RPG GAME</span>
+            <span class="project-year">2025</span>
         </div>
+    </div>
+</a>
+
+ <a href="https://github.com/Jezwin-eng/Student_registration.git" class="project-card">
+    <video autoplay loop muted playsinline class="project-image">
+        <source src="videos/Student_api.webm" type="video/webm">
+    </video>
+    <div class="project-info">
+        <div class="project-info-bottom">
+            <span class="project-title">Student API</span>
+            <span class="project-year">2025</span>
+        </div>
+    </div>
+</a> <a href="https://github.com/Jezwin-eng/Datascience_project_1.git" class="project-card">
+    <video autoplay loop muted playsinline class="project-image">
+        <source src="videos/data_science.webm" type="video/webm">
+    </video>
+    <div class="project-info">
+        <div class="project-info-bottom">
+            <span class="project-title">Data Analysis</span>
+            <span class="project-year">2025</span>
+        </div>
+    </div>
+</a> <a href="https://github.com/Jezwin-eng/Web_scraping.git" class="project-card">
+    <video autoplay loop muted playsinline class="project-image">
+        <source src="videos/web_scraping.webm" type="video/webm">
+    </video>
+    <div class="project-info">
+        <div class="project-info-bottom">
+            <span class="project-title">Web Scraping</span>
+            <span class="project-year">2025</span>
+        </div>
+    </div>
+</a>
+       
+
+    </div>
+
+</div>
+
         <div id="about" class="page-section">
-            <span class="page-title">ABOUT</span>
+
+            <div class="about-content-wrapper">
+
+                <header class="about-header">
+                    <img src="images/fox_logo.png" alt="Profile Picture" class="profile-image">
+                    <div class="header-text">
+                        <h1>SORA</h1>
+                        <h2>Jezwin Ano</h2>
+
+                    </div>
+                </header>
+
+                <main class="about-body">
+                    <p>
+                        I’m a B.Tech student in Artificial Intelligence and Data Science. When I’m not studying AI,
+                        you’ll probably find me experimenting with data or building small games with GDScript.
+                    </p>
+                    <p>
+                        I also have a huge love for exotic food, enjoy reading manhwa, and watching anime — things that
+                        keep my creativity fueled and curiosity alive.
+                    </p>
+                    <p>
+                        This space is where I share what I learn, what I create, and what I enjoy.
+                    </p>
+                </main>
+
+            </div>
+
         </div>
+
         <div id="contacts" class="page-section">
             <span class="page-title">CONTACTS</span>
         </div>
@@ -105,6 +200,7 @@
         </div>
     </div>
 
-    <script src="n.js" defer></script>
+    <script src="n_test.js" defer></script>
 </body>
+
 </html>

@@ -13,7 +13,37 @@ body {
         white-space: normal;
         width: 120px;
     }
+
 }
+
+/* === START: LIQUID REVEAL TRANSITION CODE === */
+
+#transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #FFF2E0; /* Must match your page background */
+    clip-path: url(#splotch-clip);
+    
+    /* Start scaled down and invisible */
+    transform: scale(0);
+    
+    /* Make the animation expand from the bottom-center */
+    transform-origin: 50% 100%;
+    
+    z-index: 200;
+    pointer-events: none;
+}
+
+#transition-overlay.animate {
+    transform: scale(30); /* Scale up to cover the whole screen */
+    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Animation for the fox entering from the bottom */
+
 #bg-text-container {
     position: fixed;
     top: -6%;
@@ -39,25 +69,28 @@ body {
     width: 100%;
     height: 100%;
     display: flex;
-    transition: transform 0.5s ease-in-out;
+    flex-direction: column;
+    
 }
 
-#page-wrapper.show-projects { transform: translateX(-100vw); }
-#page-wrapper.show-about { transform: translateX(-200vw); }
-#page-wrapper.show-contacts { transform: translateX(-300vw); }
-#page-wrapper.show-resume { transform: translateX(-400vw); }
+#page-wrapper.show-projects { transform: translateY(-100vh); }
+#page-wrapper.show-about { transform: translateY(-200vh); }
+#page-wrapper.show-contacts { transform: translateY(-300vh); }
+#page-wrapper.show-resume { transform: translateY(-400vh); }
 
 .page-section {
-    min-width: 100vw;
+    width: 100vw; /* Use width instead of min-width for consistency */
     height: 100vh;
+    flex-shrink: 0; /* THIS IS THE CRITICAL FIX: Prevents the page from shrinking */
+    position: relative; /* Good practice for pages with absolutely positioned items */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 #projects, #about, #contacts, #resume {
-    background-color: #333;
-    color: white;
+    background-color: #FFF2E0; /* Matches the homepage */
+    color: #5D4037; /* A calm, dark brown for readability */
 }
 
 .page-title {
@@ -116,7 +149,7 @@ body {
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
-    font-family: Arial, sans-serif;
+    font-family: 'Baloo 2';
     font-weight: bold;
 }
 #dialogue-box.showing {
@@ -461,3 +494,167 @@ body {
 
 .close-btn .x-bar:nth-child(1) { transform: translate(-50%, -50%) rotate(45deg); }
 .close-btn .x-bar:nth-child(2) { transform: translate(-50%, -50%) rotate(-45deg); }
+
+
+/* ================================= */
+/* NEW ABOUT PAGE STYLES (Corrected) */
+/* ================================= */
+
+#about {
+  overflow-y: auto;
+  padding: 10vh 30px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  font-family: 'Poppins', 'Segoe UI', sans-serif; /* Apply Poppins as the primary font */
+  color: #333; /* Slightly darker text for better readability */
+  line-height: 1.9; /* Improved line height for better reading flow */
+ }
+ 
+
+ .about-content-wrapper {
+  width: 100%;
+  max-width: 800px; /* Slightly wider content area */
+ }
+ 
+
+ .about-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 50px; /* Increased margin below the header */
+ }
+ 
+
+ .profile-image {
+  width: 200px; /* Increased logo size */
+  height: 200px; /* Increased logo size */
+  border-radius: 50%;
+  object-fit: cover;
+  border: 8px solid #FFFFFF; /* Thicker white border */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+  margin-right: 40px; /* Increased space between logo and text */
+  flex-shrink: 0;
+ }
+ 
+
+ .header-text {
+  text-align: left;
+ }
+ 
+
+.about-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+    color: #222;
+    line-height: 1; /* Add this line */
+}
+
+.about-header h2 {
+    font-size: 2.5rem;
+    font-weight: 500;
+    margin: 0.1rem 0 0 0; /* A tiny margin for separation */
+    color: #555;
+    line-height: 1; /* Add this line */
+}
+ 
+
+ /* Body text */
+ .about-body p {
+  font-size: 1.15rem; /* Slightly larger paragraph text */
+  font-weight: 400;
+  margin: 1.2rem 0;
+  color: #444; /* Slightly darker body text */
+ }
+ 
+
+ .about-body p:last-child {
+  margin-bottom: 0;
+ }
+ 
+
+ .about-body strong {
+  font-weight: 700; /* Stronger emphasis */
+  color: #222; /* Darker emphasized text */
+ }
+
+/* ===================================== */
+/* PROJECTS PAGE - MASONRY LAYOUT (FIXED) */
+/* ===================================== */
+
+#projects {
+    padding: 5vh 30px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.projects-grid {
+    column-count: 2;
+    column-gap: 25px;
+    max-width: 1100px;
+    margin: 0 auto; /* Add this line to center the grid */
+}
+
+.project-card {
+    position: relative; /* Still needed for the text overlay */
+    display: inline-block;
+    width: 100%;
+    break-inside: avoid; /* Prevents cards from splitting across columns */
+    margin-bottom: 25px;
+    overflow: hidden; /* Clips the content to the rounded corners */
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: scale(1.03);
+}
+
+/* THIS IS THE KEY FIX: The image/video is now back in the normal document flow */
+.project-image {
+    display: block;
+    width: 100%;
+    height: auto; /* Height is now determined by the media's own aspect ratio */
+}
+
+/* The overlay is now positioned absolutely again, relative to the card */
+.project-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+}
+
+.project-info-bottom {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.project-title {
+    font-size: 1.1rem;
+}
+
+.project-year {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .projects-grid {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .projects-grid {
+        column-count: 1;
+    }
+}
