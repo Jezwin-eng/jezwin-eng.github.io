@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const homeButton = document.getElementById('home-button');
     const aboutButton = document.getElementById('about-button');
     const projectsButton = document.getElementById('projects-button');
-    const contactsButton = document.getElementById('contacts-button');
+
 
     // PASTE THIS AT THE VERY TOP OF n_test.js
 function transitionToPage(targetClass) {
@@ -138,13 +138,12 @@ function transitionToPage(targetClass) {
     });
 }
     
-    if (resumeSign) {
-    resumeSign.addEventListener('mouseover', () => showDialogue("💼I'm looking for a job", resumeSign));
+    
+if (resumeSign) {
+    resumeSign.addEventListener('mouseover', () => showDialogue("💼 Check out my resume!", resumeSign));
     resumeSign.addEventListener('mouseout', hideDialogue);
-    resumeSign.addEventListener('click', () => {
-        transitionToPage('show-resume'); // This is the new line
-    });
 }
+
 
     if (catPicture) {
     catPicture.addEventListener('mouseover', () => showDialogue("🦊Learn more about me🦊", catPicture));
