@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SORA - Articles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Noto+Color+Emoji&family=Pixelify+Sans:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFF2E0;
+            color: #5D4037;
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            color: #5D4037;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .back-button:hover {
+            transform: scale(1.05);
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .article-card {
+            background-color: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .article-card:hover {
+            transform: scale(1.03);
+        }
+
+        .article-card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .article-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+        }
+
+        .article-details {
+            font-size: 0.9rem;
+            color: #777;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .loading-message {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <a href="index_test.html" class="back-button">
+        ← Back
+    </a>
+    <h1>Latest Articles</h1>
+    <div class="articles-grid">
+        <div class="loading-message">Loading articles...</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Function to fetch and display DEV.to articles
+            async function fetchDevToArticles() {
+                const articlesGrid = document.querySelector('.articles-grid');
+
+                // You can change the tags here to customize the articles you see.
+                const tags = ['ai', 'webdev', 'javascript'];
+                const tagQuery = tags.join(','); // Creates a string like 'tag1,tag2,tag3'
+
+                // The DEV.to API endpoint to fetch articles by tag
+                const url = `https://dev.to/api/articles?tags=${tagQuery}&per_page=9`;
+
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const articles = await response.json();
+
+                    articlesGrid.innerHTML = ''; // Clear the "Loading" message
+
+                    if (articles.length === 0) {
+                        articlesGrid.innerHTML = '<p class="loading-message">No articles found for these tags.</p>';
+                        return;
+                    }
+                    
+                    const placeholderImageUrl = 'images/alt_image_article.png';
+
+                    articles.forEach(article => {
+                        const articleCard = document.createElement('a');
+                        articleCard.href = article.url;
+                        articleCard.target = '_blank';
+                        articleCard.rel = 'noopener noreferrer';
+                        articleCard.classList.add('article-card');
+
+                        // Use a fallback image if the cover image is missing or broken
+                        const imageUrl = article.cover_image || placeholderImageUrl;
+                        
+                        articleCard.innerHTML = `
+                            <img src="${imageUrl}" 
+                                 alt="${article.title}" 
+                                 class="article-card-image"
+                                 onerror="this.onerror=null;this.src='${placeholderImageUrl}';">
+                            <div class="article-info">
+                                <h3 class="article-title">${article.title}</h3>
+                                <div class="article-details">
+                                    <span>${article.readable_publish_date}</span>
+                                    <span>${article.reading_time_minutes} min read</span>
+                                </div>
+                            </div>
+                        `;
+                        articlesGrid.appendChild(articleCard);
+                    });
+                } catch (error) {
+                    console.error('Error fetching DEV.to articles:', error);
+                    const articlesGrid = document.querySelector('.articles-grid');
+                    articlesGrid.innerHTML = '<p class="loading-message">Failed to load articles. Please try again later.</p>';
+                }
+            }
+            
+            fetchDevToArticles();
+        });
+    </script>
+</body>
+</html>
