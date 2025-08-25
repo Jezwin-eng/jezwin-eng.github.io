@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
     if (history.scrollRestoration) {
         history.scrollRestoration = 'manual';
@@ -9,15 +9,57 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pageWrapperOnLoad) {
         pageWrapperOnLoad.classList.remove('show-projects', 'show-about', 'show-contacts', 'show-resume');
     }
+     async function updateWeatherAndBackground() {
+    const location = await getIPLocation();
+    if (location) {
+        const weatherCode = await fetchWeather(location.lat, location.lon);
+        if (weatherCode !== null) {
+            await setBackground(weatherCode); // wait until background is set
+        }
+    }
+    hideLoader(); // remove loading screen once everything is done
+}
+
+function hideLoader() {
+    const loader = document.getElementById('loading-screen');
+    if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 500); // fade out
+    }
+}
+
+function setBackground(weatherCode) {
+    return new Promise((resolve) => {
+        const backgroundImage = document.getElementById('background-image');
+        const body = document.body;
+
+        body.classList.remove('raining-weather', 'sunny-weather');
+
+        if (weatherCodes.raining.includes(weatherCode)) {
+            backgroundImage.src = videoPaths.raining;
+            body.classList.add('raining-weather');
+        } else {
+            backgroundImage.src = videoPaths.sunny;
+            body.classList.add('sunny-weather');
+        }
+
+        // resolve once the image actually finishes loading
+        backgroundImage.onload = () => resolve();
+    });
+}
+
+    
+    updateWeatherAndBackground();
 
     // Manually scroll to the top of the page
     window.scrollTo(0, 0);
     const foxCharacterContainer = document.getElementById('fox-character-container');
     const catShirt = document.getElementById('fox-shirt');
-    const dialogueBox = document.getElementById('dialogue-box');
+    
+    const dialogueBoxProjects = document.getElementById('dialogue-box'); // Existing dialogue box for projects page
     const computerMonitor = document.getElementById('computer-monitor');
     const pageWrapper = document.getElementById('page-wrapper');
-    const socialIcons = document.querySelectorAll('.social-icon');
+   
     const resumeSign = document.getElementById('resume-sign');
     const catPicture = document.getElementById('cat-picture');
     const guitar = document.getElementById('guitar');
@@ -40,31 +82,51 @@ document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById('transition-overlay');
         const pageWrapper = document.getElementById('page-wrapper');
         const fox = document.getElementById('fox-character-container');
+        
 
-        foxJump();
+        if (fox) { 
+            foxJump();
+        }
         overlay.classList.add('animate');
 
         setTimeout(() => {
-            fox.style.opacity = 0;
-
-            // CORRECTED ORDER: The function is defined *before* it is used.
+            if (fox) {
+                 // Only hide the fox if we are transitioning away from it (e.g., to 'about')
+                if (targetClass !== 'show-projects') {
+                    fox.style.opacity = 0;
+                }
+            }
+            
             const onFoxEnterEnd = () => {
-                fox.classList.remove('fox-entering');
+                if (fox) {
+                    fox.classList.remove('fox-entering');
+                }
             };
-            fox.removeEventListener('animationend', onFoxEnterEnd); // Now this is safe to call
-
+            
             pageWrapper.classList.remove('show-projects', 'show-about', 'show-contacts', 'show-resume');
             if (targetClass) {
                 pageWrapper.classList.add(targetClass);
             }
 
             if (targetClass === 'show-about') {
-                fox.style.opacity = 1;
-            } else {
-                setTimeout(() => {
+                if (fox) {
                     fox.style.opacity = 1;
-                    fox.classList.add('fox-entering');
-                    fox.addEventListener('animationend', onFoxEnterEnd, { once: true });
+                    // Hide the dialogue box on the 'about' page
+                    dialogueBoxHome.style.opacity = '0';
+                    dialogueBoxHome.style.visibility = 'hidden';
+                }
+            } else if (targetClass === 'show-projects') {
+                if (fox) {
+                     // Ensure fox is visible on projects page
+                    fox.style.opacity = 1;
+                }
+            } else { // This is for the homepage
+                setTimeout(() => {
+                    if (fox) {
+                        fox.style.opacity = 1;
+                        fox.classList.add('fox-entering');
+                        fox.addEventListener('animationend', onFoxEnterEnd, { once: true });
+                    }
                 }, 50);
             }
 
@@ -76,13 +138,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const shirtImages = ['images/shirt 1.png', 'images/shirt 2.png', 'images/shirt 3.png'];
     let currentShirtIndex = 0;
 
-    // Timer for the fox's special dialogue
-    let foxHoverTimer;
+    
 
     document.addEventListener('keydown', (event) => {
         if (event.code === 'Space') {
             event.preventDefault(); // Prevent default spacebar behavior
-            foxJump();
+            if (foxCharacterContainer) {
+                foxJump();
+            }
         }
     });
 
@@ -99,15 +162,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     const showDialogue = (text, targetElement) => {
+        const dialogueBox = targetElement.closest('.page-section').id === 'homepage-section' ? dialogueBoxHome : dialogueBoxProjects;
         dialogueBox.textContent = text;
         dialogueBox.style.opacity = '1';
         dialogueBox.style.visibility = 'visible';
-        // You can add more complex positioning here if needed
     };
 
-    const hideDialogue = () => {
-        dialogueBox.style.opacity = '0';
-        dialogueBox.style.visibility = 'hidden';
+    const hideDialogue = (targetElement) => {
+        let dialogueBox = targetElement.closest('#homepage-section') ? dialogueBoxHome : dialogueBoxProjects;
+
+        if (dialogueBox) {
+            dialogueBox.style.opacity = '0';
+            dialogueBox.style.visibility = 'hidden';
+        }
     };
 
     if (catShirt) {
@@ -123,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showDialogue("💥Click me to change my shirt", catShirt);
         });
 
-        catShirt.addEventListener('mouseout', hideDialogue);
+        catShirt.addEventListener('mouseout', () => hideDialogue(catShirt));
         catShirt.src = shirtImages[currentShirtIndex];
     }
 
@@ -131,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (computerMonitor) {
         computerMonitor.addEventListener('mouseover', () => showDialogue("📂Check out my work", computerMonitor));
-        computerMonitor.addEventListener('mouseout', hideDialogue);
+        computerMonitor.addEventListener('mouseout', () => hideDialogue(computerMonitor));
         computerMonitor.addEventListener('click', () => {
             transitionToPage('show-projects'); // This is the new line
         });
@@ -140,13 +207,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (resumeSign) {
         resumeSign.addEventListener('mouseover', () => showDialogue("💼 Check out my resume!", resumeSign));
-        resumeSign.addEventListener('mouseout', hideDialogue);
+        resumeSign.addEventListener('mouseout', () => hideDialogue(resumeSign));
     }
 
 
     if (catPicture) {
         catPicture.addEventListener('mouseover', () => showDialogue("🦊Learn more about me🦊", catPicture));
-        catPicture.addEventListener('mouseout', hideDialogue);
+        catPicture.addEventListener('mouseout', () => hideDialogue(catPicture));
         catPicture.addEventListener('click', () => {
             transitionToPage('show-about'); // This is the new line
         });
@@ -162,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         guitar.addEventListener('mouseleave', () => {
-            hideDialogue();
+            hideDialogue(guitar);
             guitar.classList.remove('hover-tilt');
         });
 
@@ -175,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (speaker && backgroundMusic) {
         speaker.addEventListener('mouseover', () => showDialogue("🎵Turn on the music?", speaker));
-        speaker.addEventListener('mouseout', hideDialogue);
+        speaker.addEventListener('mouseout', () => hideDialogue(speaker));
         speaker.addEventListener('click', () => {
             if (backgroundMusic.paused) {
                 backgroundMusic.play();
@@ -190,21 +257,13 @@ document.addEventListener('DOMContentLoaded', () => {
             showDialogue("🌸The flower loves the song", flower);
             flower.classList.add('hopping');
         });
-        flower.addEventListener('mouseout', hideDialogue);
+        flower.addEventListener('mouseout', () => hideDialogue(flower));
         flower.addEventListener('animationend', () => {
             flower.classList.remove('hopping');
         });
     }
     // Social media dialogues
-    document.querySelectorAll('#linkedin-icon, #github-icon, #discord-icon').forEach(icon => {
-        let message;
-        if (icon.id === 'linkedin-icon') message = "My LinkedIn";
-        if (icon.id === 'discord-icon') message = "My Discord";
-        if (icon.id === 'github-icon') message = "My GitHub repos";
-
-        icon.addEventListener('mouseover', () => showDialogue(message, icon));
-        icon.addEventListener('mouseout', hideDialogue);
-    });
+   
 
     if (hamburgerButton && navMenu) {
         hamburgerButton.addEventListener('click', () => navMenu.classList.add('open'));
@@ -252,51 +311,73 @@ document.addEventListener('DOMContentLoaded', () => {
         const element = document.querySelector(selector);
         if (element) {
             element.addEventListener('mouseover', () => showDialogue(message, element));
-            element.addEventListener('mouseout', hideDialogue);
+            element.addEventListener('mouseout', () => hideDialogue(element));
         }
     });
 
-    // --- START: WEATHER WIDGET ---
-    // (Delete this whole function to remove the feature)
-    function fetchWeather() {
-        // Coordinates for Kochi, Kerala, India
-        const latitude = 9.93;
-        const longitude = 76.26;
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code`;
+   
 
 
-        const weatherWidget = document.getElementById('weather-widget');
+const videoPaths = {
+    sunny: 'videos/sunny_fox.webp',
+    raining: 'videos/rainy_fox.webp',
+};
 
-        // Helper function to pick an emoji based on the weather code
-        function getWeatherIcon(wmoCode) {
-            if (wmoCode === 0) return '☀️'; // Clear sky
-            if (wmoCode >= 1 && wmoCode <= 3) return '⛅️'; // Mainly clear, partly cloudy
-            if (wmoCode >= 45 && wmoCode <= 48) return '🌫️'; // Fog
-            if (wmoCode >= 51 && wmoCode <= 67) return '🌧️'; // Rain
-            if (wmoCode >= 71 && wmoCode <= 77) return '❄️'; // Snow
-            if (wmoCode >= 80 && wmoCode <= 82) return '🌦️'; // Rain showers
-            if (wmoCode >= 95 && wmoCode <= 99) return '⛈️'; // Thunderstorm
-            return '🌍'; // Default
+// Weather codes from Open-Meteo
+const weatherCodes = {
+    sunny: [0, 1, 2, 3], // Clear sky, mainly clear, partly cloudy, overcast
+    raining: [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82], // Drizzle, rain, rain showers
+    snowing: [71, 73, 75, 77, 85, 86], // Snow, snow grains
+    stormy: [95, 96, 99], // Thunderstorm
+};
+
+async function getIPLocation() {
+    try {
+        const response = await fetch('http://ip-api.com/json/');
+        const data = await response.json();
+        if (data.status === 'success') {
+            return { lat: data.lat, lon: data.lon };
         }
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const temp = Math.round(data.current.temperature_2m);
-                const wmoCode = data.current.weather_code;
-                const icon = getWeatherIcon(wmoCode);
-
-                weatherWidget.innerHTML = `
-                <span class="icon">${icon}</span>
-                <span class="temp">${temp}°C</span>
-            `;
-                weatherWidget.classList.add('visible'); // Fade it in
-            })
-            .catch(error => {
-                console.error('Error fetching weather:', error);
-                weatherWidget.style.display = 'none'; // Hide widget on error
-            });
+        return null;
+    } catch (error) {
+        console.error('Error fetching IP location:', error);
+        return null;
     }
-    fetchWeather();
-});
+}
 
+async function fetchWeather(lat, lon) {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.current.weather_code;
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+        return null;
+    }
+}
+
+
+function setBackground(weatherCode) {
+    const backgroundImage = document.getElementById('background-image');
+    const body = document.body;
+
+    // Reset weather classes
+    body.classList.remove('raining-weather', 'sunny-weather');
+
+    if (weatherCodes.raining.includes(weatherCode)) {
+        backgroundImage.src = videoPaths.raining;
+        body.classList.add('raining-weather');
+    } else {
+        backgroundImage.src = videoPaths.sunny; // Default to sunny for all other conditions
+        body.classList.add('sunny-weather');
+    }
+}
+    const dialogueBoxHome = document.getElementById('dialogue-box-home');
+    if (dialogueBoxHome) {
+        dialogueBoxHome.textContent = "Welcome to my portfolio! 👋";
+        dialogueBoxHome.style.opacity = '1';
+        dialogueBoxHome.style.visibility = 'visible';
+    }
+
+});

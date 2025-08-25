@@ -15,6 +15,12 @@
 </head>
 
 <body>
+
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <p>Loading ...</p>
+    </div>
+    <img id="background-image" src="" alt="Dynamic Background">
     <svg height="0" width="0">
         <defs>
             <clipPath id="splotch-clip" clipPathUnits="objectBoundingBox">
@@ -34,6 +40,7 @@
         <div class="bar"></div>
     </button>
     <nav id="nav-menu">
+        
         <div id="close-button" class="nav-button close-btn">
             <div class="x-bar"></div>
             <div class="x-bar"></div>
@@ -48,9 +55,7 @@
             <img src="images/document.svg" alt="Projects">
         </div>
 
-        <a href="articles.html" class="nav-button">
-            <img src="images/article.svg" alt="Articles">
-        </a>
+
 
         <a id="contacts-button" href="mailto:jezwinano@gmail.com" class="nav-button">
             <img src="images/envelope.svg" alt="Contacts">
@@ -59,16 +64,9 @@
 
     <div id="page-wrapper">
         <div id="transition-overlay"></div>
-        <div id="weather-widget">
-            Meow
-        </div>
+
         <div class="main-container page-section" id="homepage-section">
-            <div id="fox-character-container">
-                <img id="fox-body" src="images/fox_body.png" alt="Fox Character">
-                <img id="fox-shirt" src="images/shirt 1.png" alt="Fox's Shirt"
-                    data-dialog="💥Click me to change my shirt">
-                <div id="dialogue-box" class="speech-bubble"></div>
-            </div>
+                <div id="dialogue-box-home" class="speech-bubble"></div>
 
             <div id="computer-monitor" data-dialog="📂Check out my work">
                 <img src="images/desk.png" alt="Computer Monitor" class="monitor-image">
@@ -79,24 +77,25 @@
 
             <div class="social-media-shelf-container">
                 <img src="images/shelf.png" alt="Social Media Shelf" class="shelf-image">
-                <a id="linkedin-icon" href="https://in.linkedin.com/in/jezwin-ano-1a876a291" target="_blank" data-dialog="Placeholder LinkedIn message">
+                <a id="linkedin-icon" href="https://in.linkedin.com/in/jezwin-ano-1a876a291" target="_blank">
                     <div class="flower-burst"></div>
                     <img src="images/linkedin.png" alt="LinkedIn">
                 </a>
-                <a id="github-icon" href="https://github.com/Jezwin-eng" target="_blank" data-dialog="Placeholder GitHub message">
+                <a id="github-icon" href="https://github.com/Jezwin-eng" target="_blank">
                     <div class="flower-burst"></div>
                     <img src="images/github.png" alt="GitHub">
                 </a>
-                <a id="discord-icon" href="#" target="_blank" data-dialog="Placeholder Discord message">
+                <a id="discord-icon" href="#" target="_blank" >
                     <div class="flower-burst"></div>
                     <img src="images/discord.png" alt="Discord">
                 </a>
             </div>
 
-           
-<a id="resume-sign" href="documents/Resume.pdf" target="_blank" rel="noopener noreferrer" data-dialog="Check out my Resume">
-    <img src="images/resume sign.png" alt="Resume Sign" class="resume-image">
-</a>
+
+            <a id="resume-sign" href="documents/Resume.pdf" target="_blank" rel="noopener noreferrer"
+                data-dialog="Check out my Resume">
+                <img src="images/resume sign.png" alt="Resume Sign" class="resume-image">
+            </a>
 
             <div id="cat-picture" data-dialog="Learn more about me!">
                 <img src="images/frame.png" alt="Sleeping Cat Picture" class="picture-image">
@@ -118,57 +117,62 @@
         </div>
 
         <div id="projects" class="page-section">
+            <div id="fox-character-container">
+                <img id="fox-body" src="images/fox_body.png" alt="Fox Character">
+                <img id="fox-shirt" src="images/shirt 1.png" alt="Fox's Shirt"
+                    data-dialog="💥Click me to change my shirt">
+                <div id="dialogue-box" class="speech-bubble"></div>
+            </div>
+            <div class="projects-grid">
 
-    <div class="projects-grid">
+                <a href="https://github.com/Jezwin-eng/small-rpg.git" class="project-card">
+                    <video autoplay loop muted playsinline class="project-image">
+                        <source src="videos/rpg.webm" type="video/webm">
+                    </video>
+                    <div class="project-info">
+                        <div class="project-info-bottom">
+                            <span class="project-title">RPG GAME</span>
+                            <span class="project-year">2025</span>
+                        </div>
+                    </div>
+                </a>
 
-      <a href="https://github.com/Jezwin-eng/small-rpg.git" class="project-card">
-    <video autoplay loop muted playsinline class="project-image">
-        <source src="videos/rpg.webm" type="video/webm">
-    </video>
-    <div class="project-info">
-        <div class="project-info-bottom">
-            <span class="project-title">RPG GAME</span>
-            <span class="project-year">2025</span>
+                <a href="https://github.com/Jezwin-eng/Student_registration.git" class="project-card">
+                    <video autoplay loop muted playsinline class="project-image">
+                        <source src="videos/Student_api.webm" type="video/webm">
+                    </video>
+                    <div class="project-info">
+                        <div class="project-info-bottom">
+                            <span class="project-title">Student API</span>
+                            <span class="project-year">2025</span>
+                        </div>
+                    </div>
+                </a> <a href="https://github.com/Jezwin-eng/Datascience_project_1.git" class="project-card">
+                    <video autoplay loop muted playsinline class="project-image">
+                        <source src="videos/data_science.webm" type="video/webm">
+                    </video>
+                    <div class="project-info">
+                        <div class="project-info-bottom">
+                            <span class="project-title">Data Analysis</span>
+                            <span class="project-year">2025</span>
+                        </div>
+                    </div>
+                </a> <a href="https://github.com/Jezwin-eng/Web_scraping.git" class="project-card">
+                    <video autoplay loop muted playsinline class="project-image">
+                        <source src="videos/web_scraping.webm" type="video/webm">
+                    </video>
+                    <div class="project-info">
+                        <div class="project-info-bottom">
+                            <span class="project-title">Web Scraping</span>
+                            <span class="project-year">2025</span>
+                        </div>
+                    </div>
+                </a>
+
+
+            </div>
+
         </div>
-    </div>
-</a>
-
- <a href="https://github.com/Jezwin-eng/Student_registration.git" class="project-card">
-    <video autoplay loop muted playsinline class="project-image">
-        <source src="videos/Student_api.webm" type="video/webm">
-    </video>
-    <div class="project-info">
-        <div class="project-info-bottom">
-            <span class="project-title">Student API</span>
-            <span class="project-year">2025</span>
-        </div>
-    </div>
-</a> <a href="https://github.com/Jezwin-eng/Datascience_project_1.git" class="project-card">
-    <video autoplay loop muted playsinline class="project-image">
-        <source src="videos/data_science.webm" type="video/webm">
-    </video>
-    <div class="project-info">
-        <div class="project-info-bottom">
-            <span class="project-title">Data Analysis</span>
-            <span class="project-year">2025</span>
-        </div>
-    </div>
-</a> <a href="https://github.com/Jezwin-eng/Web_scraping.git" class="project-card">
-    <video autoplay loop muted playsinline class="project-image">
-        <source src="videos/web_scraping.webm" type="video/webm">
-    </video>
-    <div class="project-info">
-        <div class="project-info-bottom">
-            <span class="project-title">Web Scraping</span>
-            <span class="project-year">2025</span>
-        </div>
-    </div>
-</a>
-       
-
-    </div>
-
-</div>
 
         <div id="about" class="page-section">
 
@@ -204,7 +208,7 @@
         <div id="contacts" class="page-section">
             <span class="page-title">CONTACTS</span>
         </div>
-       
+
     </div>
 
     <script src="n.js" defer></script>
