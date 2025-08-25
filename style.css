@@ -730,9 +730,9 @@ body.sunny-weather #dialogue-box-home {
 }
 
 body.raining-weather #dialogue-box-home {
-    top: -12px;
-    left: 38%;
-    transform: scale(1.1)
+    top: 231px;
+    left: 41%;
+    transform: scale(1.1);
 }
 
 /* Loading Screen */
